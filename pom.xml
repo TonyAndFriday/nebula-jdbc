@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mininglamp.km</groupId>
+    <artifactId>nebula-jdbc</artifactId>
+    <version>1.2-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <nebula-client.version>2.5.0</nebula-client.version>
+        <log4j.version>2.13.3</log4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.vesoft</groupId>
+            <artifactId>client</artifactId>
+            <version>${nebula-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <scm>
+        <connection>scm:git:git@code.mlamp.cn:SCOPA/eip/component/nebula-jdbc.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <addSchema>false</addSchema>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <generateReleasePoms>false</generateReleasePoms>
+                    <arguments>-DskipTests</arguments>
+                    <scmReleaseCommitComment>Release @{releaseLabel}</scmReleaseCommitComment>
+                    <scmDevelopmentCommitComment>For next development iteration</scmDevelopmentCommitComment>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>km</id>
+            <name>KM Private Repository</name>
+            <url>http://eip-maven-2.qa.mlamp.cn/repository/km/</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>fatjar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <transformers>
+                                        <transformer
+                                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
